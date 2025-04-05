@@ -1,103 +1,210 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Toaster, toast } from "sonner";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [count, setCount] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [isBoosted, setIsBoosted] = useState(false);
+  const [boostUsedLevel, setBoostUsedLevel] = useState<number[]>([]);
+  const [clickValue, setClickValue] = useState(1);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+  const kcalPerSecond = level;
+
+  // ⚡ ganho automático
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((prev) => prev + kcalPerSecond);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [kcalPerSecond]);
+
+  // Load localStorage
+  useEffect(() => {
+    const savedCount = localStorage.getItem("count");
+    const savedLevel = localStorage.getItem("level");
+    const savedLastVisit = localStorage.getItem("lastVisit");
+
+    if (savedCount) setCount(Number(savedCount));
+    if (savedLevel) setLevel(Number(savedLevel));
+
+    if (savedLastVisit) {
+      const timeAway = Math.floor((Date.now() - Number(savedLastVisit)) / 1000);
+      const offlineGain = timeAway * kcalPerSecond;
+      if (offlineGain > 0) {
+        setCount((prev) => prev + offlineGain);
+        toast.success(`+${offlineGain} kcal enquanto você estava fora!`);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("count", String(count));
+  }, [count]);
+
+  useEffect(() => {
+    localStorage.setItem("level", String(level));
+  }, [level]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.setItem("lastVisit", String(Date.now()));
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
+
+  const activateBoost = () => {
+    if (isBoosted || boostUsedLevel.includes(level)) {
+      toast.warning("Esse boost já foi usado nesse nível!");
+      return;
+    }
+
+    setIsBoosted(true);
+    setBoostUsedLevel((prev) => [...prev, level]);
+    toast.info("🍬 Fúria do Açúcar ativada!");
+
+    setTimeout(() => {
+      setIsBoosted(false);
+      toast.warning("⚡ Boost acabou!");
+    }, 10000);
+  };
+
+  const upgradeLevel = () => {
+    const cost = level * 100;
+    if (count >= cost) {
+      setCount((prev) => prev - cost);
+      setLevel((prev) => prev + 1);
+      toast.success(`⬆️ Level up! Agora você está no nível ${level + 1}`);
+    } else {
+      toast.error("Você precisa de mais kcal!");
+    }
+  };
+
+  const buyMegaClick = () => {
+    const cost = 250;
+    if (count >= cost) {
+      setCount((prev) => prev - cost);
+      setClickValue((prev) => prev + 2);
+      toast.success("💪 Mega Click comprado! Agora cada clique vale mais!");
+    } else {
+      toast.error("Você precisa de mais kcal!");
+    }
+  };
+
+  const buyAutoClick = () => {
+    const cost = 500;
+    if (count >= cost) {
+      setCount((prev) => prev - cost);
+      setInterval(() => {
+        setCount((prev) => prev + 1);
+      }, 1000);
+      toast.success("🤖 Auto Click ativado! Ganhando 1 kcal/s extra!");
+    } else {
+      toast.error("Você precisa de mais kcal!");
+    }
+  };
+
+  return (
+    <div
+      className="h-screen flex flex-col justify-center items-center gap-6 p-4 bg-gradient-to-br from-rose-50 to-pink-100"
+      style={{
+        touchAction: "manipulation",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        msUserSelect: "none",
+      }}
+    >
+      <Toaster position="top-center" richColors closeButton />
+
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: -20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-center"
+      >
+        <h1 className="text-4xl font-bold text-pink-700 drop-shadow">
+          {count} <span className="text-sm">kcal</span>
+        </h1>
+        <p className="text-lg mt-1 text-pink-800">
+          Level {level} — {kcalPerSecond} kcal/s — +{clickValue} por clique
+        </p>
+      </motion.div>
+
+      <motion.button
+        whileTap={{ scale: 0.95, rotate: [-5, 5, -5, 5, 0] }}
+        transition={{ type: "spring", stiffness: 300 }}
+        onClick={(e) => {
+          e.preventDefault();
+          setCount((prev) => prev + (isBoosted ? clickValue * 10 : clickValue));
+        }}
+        onTouchStart={(e) => e.preventDefault()}
+        className="focus:outline-none touch-none"
+        style={{
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          msUserSelect: "none",
+        }}
+      >
+        <Image
+          src="/dream.png"
+          alt="sonho de padaria"
+          width={250}
+          height={250}
+          className="select-none pointer-events-none"
+        />
+      </motion.button>
+
+      <div className="flex flex-col gap-3 w-full max-w-xs">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={activateBoost}
+          disabled={isBoosted || boostUsedLevel.includes(level)}
+          className={`w-full py-2 rounded text-white font-semibold transition ${
+            isBoosted || boostUsedLevel.includes(level)
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-pink-500 hover:bg-pink-600"
+          }`}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          🍬 Ativar Fúria do Açúcar (x10 por 10s)
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={upgradeLevel}
+          disabled={count < level * 100}
+          className={`w-full py-2 rounded font-semibold transition ${
+            count >= level * 100
+              ? "bg-yellow-400 hover:bg-yellow-500 text-black"
+              : "bg-gray-300 text-gray-600 cursor-not-allowed"
+          }`}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          ⬆️ Evoluir para o Level {level + 1} ({level * 100} kcal)
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={buyMegaClick}
+          className="w-full py-2 rounded font-semibold bg-purple-400 hover:bg-purple-500 text-white"
         >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          💥 Comprar Mega Click (+2 por clique) — 250 kcal
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={buyAutoClick}
+          className="w-full py-2 rounded font-semibold bg-green-400 hover:bg-green-500 text-white"
+        >
+          🤖 Comprar Auto Click (+1/s) — 500 kcal
+        </motion.button>
+      </div>
     </div>
   );
 }
