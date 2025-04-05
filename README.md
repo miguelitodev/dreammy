@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍩 kcal Clicker Game
 
-## Getting Started
+Um divertido clicker game onde você acumula **kcal** clicando em um doce de padaria, compra upgrades e ativa boosts para maximizar seus ganhos!
 
-First, run the development server:
+Construído com [Next.js](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/) e [Sonner](https://sonner.emilkowal.dev/).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Clique no doce para ganhar **kcal**
+- Compre **Mega Clicks** (+2 por clique)
+- Compre **Auto Clicks** (+1 kcal/s)
+- Ative o boost **Fúria do Açúcar** (x10 por clique por 10 segundos)
+- Evolua de nível para ganhar mais kcal/s
+- Ganhos offline quando você sai do jogo
+- Feedback visual e sonoro com animações e toasts ✨
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧱 Tecnologias
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Next.js 15 (App Router)](https://nextjs.org/)
+- [React 18](https://react.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Framer Motion](https://www.framer.com/motion/)
+- [Sonner](https://sonner.emilkowal.dev/) (notificações)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🖼️ Demonstração
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> Adicione aqui um link do Vercel, Netlify ou um gif do jogo funcionando.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📦 Instalação local
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/miguelitodev/kcal-clicker-game.git
+   cd kcal-clicker-game
+   ```
+
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+
+3. Rode o projeto:
+   ```bash
+   npm run dev
+   ```
+
+4. Acesse em [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 🤓 Autor
+
+Desenvolvido com carinho por [Miguelito](https://miguelito.dev) 💻  
+[![GitHub](https://img.shields.io/badge/GitHub-miguelitodev-181717?style=flat&logo=github)](https://github.com/miguelitodev)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-miguelitodev-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/miguelitodev)
+[![Twitter](https://img.shields.io/badge/Twitter-miguelitoodev-1DA1F2?style=flat&logo=twitter)](https://twitter.com/miguelitoodev)
+
+---
+
+> 🍬 Divirta-se e clique com moderação!
