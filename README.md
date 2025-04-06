@@ -4,7 +4,6 @@ Um divertido clicker game onde você acumula **kcal** clicando em um doce de pad
 
 Construído com [Next.js](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/) e [Sonner](https://sonner.emilkowal.dev/).
 
-
 ---
 
 ## 🚀 Funcionalidades
@@ -12,10 +11,22 @@ Construído com [Next.js](https://nextjs.org/), [React](https://react.dev/), [Ta
 - Clique no doce para ganhar **kcal**
 - Compre **Mega Clicks** (+2 por clique)
 - Compre **Auto Clicks** (+1 kcal/s)
-- Ative o boost **Fúria do Açúcar** (x10 por clique por 10 segundos)
-- Evolua de nível para ganhar mais kcal/s
-- Ganhos offline quando você sai do jogo
+- Ative o boost **Fúria do Açúcar** (x10 por clique por 10 segundos, 1 vez por nível)
+- Evolua de nível para ganhar mais **kcal/s**
+- Ganhos **offline** quando você sai do jogo
 - Feedback visual e sonoro com animações e toasts ✨
+
+---
+
+## 💰 Custos que escalam por nível
+
+Todos os upgrades aumentam conforme seu **nível atual**, tornando o progresso cada vez mais desafiador:
+
+| Upgrade         | Fórmula do Custo                          |
+|-----------------|--------------------------------------------|
+| Evoluir Nível   | `nível atual * 100`                        |
+| Mega Click      | `250 + (nível * 50)`                       |
+| Auto Click      | `500 + (nível * 100)`                      |
 
 ---
 
@@ -60,8 +71,8 @@ Construído com [Next.js](https://nextjs.org/), [React](https://react.dev/), [Ta
 ## 🤓 Autor
 
 Desenvolvido com carinho por [Miguelito](https://miguelito.dev) 💻  
-[![GitHub](https://img.shields.io/badge/GitHub-miguelitodev-181717?style=flat&logo=github)](https://github.com/miguelitodev)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-miguelitodev-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/miguelitodev)
+[![GitHub](https://img.shields.io/badge/GitHub-miguelitodev-181717?style=flat&logo=github)](https://github.com/miguelitodev)  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-miguelitodev-0077B5?style=flat&logo=linkedin)](https://linkedin.com/in/miguelitodev)  
 [![Twitter](https://img.shields.io/badge/Twitter-miguelitoodev-1DA1F2?style=flat&logo=twitter)](https://twitter.com/miguelitoodev)
 
 ---

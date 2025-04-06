@@ -14,7 +14,6 @@ export default function Home() {
 
   const kcalPerSecond = level;
 
-  // ⚡ ganho automático
   useEffect(() => {
     const interval = setInterval(() => {
       setCount((prev) => prev + kcalPerSecond);
@@ -22,7 +21,6 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [kcalPerSecond]);
 
-  // Load localStorage
   useEffect(() => {
     const savedCount = localStorage.getItem("count");
     const savedLevel = localStorage.getItem("level");
@@ -85,18 +83,18 @@ export default function Home() {
   };
 
   const buyMegaClick = () => {
-    const cost = 250;
+    const cost = 250 + level * 50;
     if (count >= cost) {
       setCount((prev) => prev - cost);
       setClickValue((prev) => prev + 2);
       toast.success("💪 Mega Click comprado! Agora cada clique vale mais!");
     } else {
-      toast.error("Você precisa de mais kcal!");
+      toast.error(`Você precisa de ${cost} kcal para comprar Mega Click!`);
     }
   };
 
   const buyAutoClick = () => {
-    const cost = 500;
+    const cost = 500 + level * 100;
     if (count >= cost) {
       setCount((prev) => prev - cost);
       setInterval(() => {
@@ -104,9 +102,12 @@ export default function Home() {
       }, 1000);
       toast.success("🤖 Auto Click ativado! Ganhando 1 kcal/s extra!");
     } else {
-      toast.error("Você precisa de mais kcal!");
+      toast.error(`Você precisa de ${cost} kcal para comprar Auto Click!`);
     }
   };
+
+  const megaClickCost = 250 + level * 50;
+  const autoClickCost = 500 + level * 100;
 
   return (
     <div
@@ -193,7 +194,7 @@ export default function Home() {
           onClick={buyMegaClick}
           className="w-full py-2 rounded font-semibold bg-purple-400 hover:bg-purple-500 text-white"
         >
-          💥 Comprar Mega Click (+2 por clique) — 250 kcal
+          💥 Comprar Mega Click (+2 por clique) — {megaClickCost} kcal
         </motion.button>
 
         <motion.button
@@ -202,7 +203,7 @@ export default function Home() {
           onClick={buyAutoClick}
           className="w-full py-2 rounded font-semibold bg-green-400 hover:bg-green-500 text-white"
         >
-          🤖 Comprar Auto Click (+1/s) — 500 kcal
+          🤖 Comprar Auto Click (+1/s) — {autoClickCost} kcal
         </motion.button>
       </div>
     </div>
